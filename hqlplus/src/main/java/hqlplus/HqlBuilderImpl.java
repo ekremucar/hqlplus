@@ -345,15 +345,14 @@ public class HqlBuilderImpl<D extends HqlParameter> implements HqlBuilder<D> {
 	private void joinAnnotation(StringBuilder queryBuilder, String selectAlias, Join annotation, boolean fetch) {
 		JoinType joinType = annotation.joinType();
 		String collection = annotation.collection();
-		if(joinType == JoinType.LEFT_OUTER_JOIN){
-			queryBuilder.append(" LEFT JOIN ");
-			if(fetch){
-				queryBuilder.append(" FETCH ");
-			}
-			queryBuilder.append(" ").append(collection).append(" AS ").append(annotation.alias());
-		} else {
-			throw new RuntimeException("Not implemented yet");
+		
+		queryBuilder.append(" ").append(joinType.getJoinWord()).append(" ");
+		
+		if(fetch){
+			queryBuilder.append(" FETCH ");
 		}
+		
+		queryBuilder.append(" ").append(collection).append(" AS ").append(annotation.alias());
 	}
 
 	class SelectAlias {
