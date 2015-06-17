@@ -1,5 +1,7 @@
 package hqlplus.annotation;
 
+import hqlplus.enumeration.JoinType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,32 +14,5 @@ public @interface Join {
 
     String alias();
 	
-	public enum JoinType {
-
-		
-		INNER_JOIN("INNER JOIN"),
-		LEFT_OUTER_JOIN("LEFT JOIN"),
-		RIGHT_OUTER_JOIN("RIGHT OUTER JOIN");
-		//FULL_JOIN
-		
-		
-		private JoinType(String joinWord){
-			this.joinWord = joinWord;
-		}
-		
-		private String joinWord;
-		
-		public String getJoinWord() {
-			return joinWord;
-		}
-		
-		public void setJoinWord(String joinWord) {
-			this.joinWord = joinWord;
-		}
-		;
-	}
-	
 	JoinType joinType() default JoinType.LEFT_OUTER_JOIN;
-	
-
 }

@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ClazzInfo {
-	String clazzName();
+    Class clazz();
+
 	String alias();
 }
