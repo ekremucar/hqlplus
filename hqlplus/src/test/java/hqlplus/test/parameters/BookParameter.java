@@ -5,9 +5,10 @@ import java.util.Locale;
 import hqlplus.HqlParameter;
 import hqlplus.annotation.ClazzInfo;
 import hqlplus.annotation.FieldInfo;
-import hqlplus.annotation.FieldInfo.CompareMethod;
+import hqlplus.enumeration.CompareMethod;
+import hqlplus.test.entities.Book;
 
-@ClazzInfo(clazzName = "Book", alias = "book")
+@ClazzInfo(clazz = Book.class, alias = "book")
 public class BookParameter extends HqlParameter {
 
     public BookParameter(Locale locale) {

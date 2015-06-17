@@ -4,12 +4,12 @@ import hqlplus.annotation.ClazzInfo;
 import hqlplus.annotation.Disjunction;
 import hqlplus.annotation.Elements;
 import hqlplus.annotation.FieldInfo;
-import hqlplus.annotation.FieldInfo.CompareMethod;
-import hqlplus.annotation.FieldInfo.MatchMode;
 import hqlplus.annotation.Join;
-import hqlplus.annotation.Join.JoinType;
 import hqlplus.annotation.Joins;
 import hqlplus.annotation.SelectMore;
+import hqlplus.enumeration.CompareMethod;
+import hqlplus.enumeration.JoinType;
+import hqlplus.enumeration.MatchMode;
 import hqlplus.paging.OrderBy;
 import hqlplus.paging.Pager;
 
@@ -40,7 +40,8 @@ public class HqlBuilderImpl<D extends HqlParameter> implements HqlBuilder<D> {
             SelectAlias selectAlias = null;
             if (obj.isAnnotationPresent(ClazzInfo.class)) {
                 ClazzInfo annotation = obj.getAnnotation(ClazzInfo.class);
-                clazzName = annotation.clazzName();
+                //clazzName = annotation.clazzName();
+                clazzName = annotation.clazz().getName().substring(annotation.clazz().getName().lastIndexOf(".") + 1);
                 selectAlias = new SelectAlias(clazzName, annotation.alias());
             }
 
@@ -100,7 +101,8 @@ public class HqlBuilderImpl<D extends HqlParameter> implements HqlBuilder<D> {
 			List<SelectAlias> moreSelects = new ArrayList<SelectAlias>();
 			if (obj.isAnnotationPresent(SelectMore.class)) {
 				SelectMore annotation = obj.getAnnotation(SelectMore.class);
-				clazzName = annotation.clazzName();
+				//clazzName = annotation.clazzName();
+                clazzName = annotation.clazz().getName().substring(annotation.clazz().getName().lastIndexOf(".") + 1);
 				moreSelects.add(new SelectAlias(clazzName, annotation.alias()));
 			}
 
@@ -218,7 +220,22 @@ public class HqlBuilderImpl<D extends HqlParameter> implements HqlBuilder<D> {
 					
 					String clause = alias + "." + fieldName + " > :"+paramName;
 					returnee.setClause( clause );
-				} else if(compareMethod == CompareMethod.IN){
+				} else if(compareMethod == CompareMethod.GE){
+                    returnee.getValues().put(paramName, fieldValue);
+
+                    String clause = alias + "." + fieldName + " >= :"+paramName;
+                    returnee.setClause( clause );
+                } else if(compareMethod == CompareMethod.LT){
+                    returnee.getValues().put(paramName, fieldValue);
+
+                    String clause = alias + "." + fieldName + " < :"+paramName;
+                    returnee.setClause( clause );
+                } else if(compareMethod == CompareMethod.LE){
+                    returnee.getValues().put(paramName, fieldValue);
+
+                    String clause = alias + "." + fieldName + " <= :"+paramName;
+                    returnee.setClause( clause );
+                } else if(compareMethod == CompareMethod.IN){
 					returnee.getValues().put(paramName, fieldValue);
 					
 					String clause = alias + "." + fieldName + " IN (:"+paramName + ")";
